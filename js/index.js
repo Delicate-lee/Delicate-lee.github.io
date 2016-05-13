@@ -2,7 +2,7 @@
 * @Author: LEE
 * @Date:   2016-04-28 22:42:36
 * @Last Modified by:   LEE
-* @Last Modified time: 2016-05-03 22:33:13
+* @Last Modified time: 2016-05-14 00:12:21
 */
 
 // 'use strict';
@@ -36,6 +36,7 @@ $('aside a').on('click',function(){
         transformOrigin: 'right',
         zIndex:1
     }, {
+
         left: 0,
         opacity: 0.7,
         transform: 'rotateY(-25deg) translateX(-48px) ',
@@ -43,12 +44,14 @@ $('aside a').on('click',function(){
         zIndex:1
 
     }, {
+
         left: 450,
         opacity: 1,
         transform: 'rotateY(0) translateX(0)',
         transformOrigin: '',
         zIndex:3
     }, {
+
         left: 900,
         opacity: 0.7,
         transform: 'rotateY(25deg) translateX(48px)',
@@ -151,4 +154,27 @@ $('aside a').on('click',function(){
     verticalCentered:true,
 
   });
+
+
 });
+
+ var count=0;
+      var arr = [];
+      var lis = document.getElementsByClassName('li');
+      Array.prototype.push.apply(arr,lis);
+      document.getElementById('pre').onclick=function(){
+        count--;
+        arr.forEach(function(li,index){
+          li.style.transform='rotateX('+count*90+'deg)';
+          li.style['transition-delay']=index*0.25+'s';
+
+        })
+      }
+       document.getElementById('nex').onclick=function(){
+        count++;
+        arr.forEach(function(li,index){
+          li.style.transform='rotateX('+count*90+'deg)';
+          li.style['transition-delay']=index*0.25+'s';
+
+        })
+      }

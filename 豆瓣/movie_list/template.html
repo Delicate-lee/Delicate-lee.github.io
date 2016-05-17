@@ -1,0 +1,51 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-10">
+            <ul class="nav nav-tabs">
+                <li><a href="#/list/inTheaters/1">正在热映</a></li>
+                <li><a href="#/list/comingSoon/1">即将上映</a></li>
+                <li><a href="#/list/top250/1">top250</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-2">
+            <span style="'font-size:  35px; float: right;">电影列表</span>
+        </div>
+    </div>
+    <div ng-if="vm.loading">
+        正在加载中......
+    </div>
+    <div ng-if="!vm.loading" class="row">
+        <ol class="breadcrumb">
+            <li>电影列表</li>
+            <li>{{vm.pager.category}}</li>
+            <li class="active">第{{vm.pager.curr}}页(共{{vm.pager.max}}页)</li>
+        </ol>
+    </div>
+    <div ng-if="!vm.loading" calss="'row" style="margin-top: 10px;"></div>
+    <div class="col-xs-4" ng-repeat="item in vm.data">
+        <div class="thumbnail img-thumbnail">
+            <img src="{{item.images.large}}"
+                 style="height:420px; overflow-y: hidden;"
+                 alt="{{item.title}}"/>
+            <div class="caption" style="text-align:center">
+                <a ng-href="#/detail/{{item.id}}">{{item.title}}</a>
+            </div>
+        </div>
+    </div>
+    <div ng-if="!vm.loading" class="row">
+        <div class="col-xs-12">
+            <div class="pagination pull-right">
+                <li>
+                    <a ng-href="#/list/{{vm.pager.category}}/{{vm.pager.prev}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;上一页</span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-href="#/list/{{vm.pager.category}}/{{vm.pager.next}}" aria-label="Next">
+                        <span aria-hidden="true">下一页&raquo;</span>
+                    </a>
+                </li>
+            </div>
+        </div>
+    </div>
+</div>

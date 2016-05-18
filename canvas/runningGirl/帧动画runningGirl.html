@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<button onclick="changeDirection(1)">向左</button>
+<button onclick="changeDirection(2)">向上</button>
+<button onclick="changeDirection(4)">向右</button>
+<button onclick="changeDirection(6)">向下</button>
+<canvas id="cas" width="1000" height="800" style="border: 1px solid #000;"></canvas>
+<!--<img id="pic" src="./estell.png" alt="#"/>-->
+
+<script>
+
+    var pic=new Image;
+    pic.src="./estell.png";
+    var cas=document.getElementById('cas');
+    var cax=cas.getContext('2d');
+//    var pic=document.getElementById('pic');
+    var changeDirection;
+
+    pic.addEventListener('load', function () {
+        var runningGirl= function (frameIndex,direction,x,y,w,h) {
+            this.frameIndex=frameIndex;
+            this.direction=direction;
+            this.x=x;
+            this.y=y;
+            this.w=w;
+            this.h=h;
+            this.speed=0.1;
+            this.waitTime=0;
+    }
+
+        //键盘控制方向
+    window.addEventListener('keydown', function (e) {
+//    alert(e.keyCode);
+        if(e.keyCode===37) changeDirection(0);
+        if(e.keyCode===65) changeDirection(1);
+        if(e.keyCode===38) changeDirection(2);
+        if(e.keyCode===68) changeDirection(3);
+        if(e.keyCode===39) changeDirection(4);
+        if(e.keyCode===87) changeDirection(5);
+        if(e.keyCode===40) changeDirection(6);
+        if(e.keyCode===83) changeDirection(7);
+        e.preventDefault();
+    })
+
+    //更新数据
+    runningGirl.prototype.update=function(dt){
+        this.waitTime+=dt;
+        if(this.waitTime>150){
+            this.frameIndex= (this.frameIndex + 1)%8;
+            this.waitTime-=150;
+        }
+
+        //检测改变的direction ，继而改变画布移动，以及精灵图增坐标
+        switch (this.direction){
+            case 0:
+                this.x -= this.speed*dt;
+                break;
+            case 1:
+                this.x -= this.speed*dt;
+                this.y -= this.speed*dt;
+                break;
+            case 2:
+                this.y -= this.speed*dt;
+                break;
+            case 3:
+                this.x += this.speed*dt;
+                this.y -= this.speed*dt;
+                break;
+            case 4:
+                this.x += this.speed*dt;
+                break;
+            case 5:
+                this.x += this.speed*dt;
+                this.y += this.speed*dt;
+                break;
+            case 6:
+                this.y +=this.speed*dt;
+                break;
+            case 7:
+                this.x -= this.speed*dt;
+                this.y += this.speed*dt;
+                break;
+        }
+    }
+
+    //绘制图像
+    runningGirl.prototype.draw=function(){
+        cax.drawImage(pic,
+                this.frameIndex*256,this.direction*256,256,256,
+                this.x, this.y, this.w, this.h
+        )
+    }
+
+
+    //new 对象
+    var girl=new runningGirl(-1,4,0,0,256,256);
+    var girl1=new runningGirl(-1,2,600,0,256,256);
+
+    // 按键改变direction
+    changeDirection=function(direction){
+        girl.direction=direction;
+        girl1.direction=direction;
+    }
+
+    var lastTime=Date.now();
+
+//    setInterval(function () {
+//        var dt=Date.now()-lastTime;
+//        lastTime=Date.now();
+//
+//        cax.clearRect(0,0,1000,800);
+//        girl.update(dt);
+//        girl1.update(dt);
+//        girl.draw();
+//        girl1.draw();
+////        console.log(girl.frameIndex)
+//        console.log(dt)
+//    },1000/60);
+
+
+
+        function loop(){
+            var dt=Date.now() -lastTime;
+            lastTime=Date.now();
+            console.log(dt);
+            cax.clearRect(0,0,1000,800);
+            girl.update(dt);
+            girl1.update(dt);
+            girl.draw();
+            girl1.draw();
+            //递归
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+})
+
+
+
+</script>
+</body>
+</html>

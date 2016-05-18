@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="user-scale=no, maximum-scale=1.0,minimum-scale=1.0,width=device-width,initial-scale=1.0"/>
+    <title></title>
+    <link rel="stylesheet" href="../FlappyBird/"/>
+    <style>
+        #myCanvas {
+            max-width: 640px;
+            min-width: 320px;
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<header class="jd_topbar">
+    <a href="index.html" class="icon_back"></a>
+    <h3>积分赢折扣</h3>
+    <a class="icon_menu" href="#"></a>
+</header>
+<script src="index.js"></script>
+<script src="bird.js"></script>
+<script src="ground.js"></script>
+<script src="bond.js"></script>
+<script src="sky.js"></script>
+<script src="bond.js"></script>
+<canvas id="myCanvas"  width="800" height="600"   style="border: 1px solid #000;"></canvas>
+<script>
+    var myCanvas=document.getElementById('myCanvas');
+    var cax=myCanvas.getContext('2d');
+
+    myCanvas.addEventListener('click', function () {
+        myBird.fly();
+    });
+
+
+
+    function main(){
+        var lastTime=Date.now();
+        function loop(){
+            var dt=Date.now()-lastTime;
+            lastTime=Date.now();
+            cax.clearRect(0,0,1000,800);
+
+            sky1.update(dt);
+            sky2.update(dt);
+            ground1.update(dt);
+            ground2.update(dt);
+            ground3.update(dt);
+            ground4.update(dt);
+            bond1.update(dt);
+            bond2.update(dt);
+            bond3.update(dt);
+            bond4.update(dt);
+            bond5.update(dt);
+            myBird.update(dt);
+
+            cax.beginPath();
+
+            sky1.draw();
+            sky2.draw();
+            bond1.draw();
+            bond2.draw();
+            bond3.draw();
+            bond4.draw();
+            bond5.draw();
+            ground1.draw();
+            ground2.draw();
+            ground3.draw();
+            ground4.draw();
+            myBird.draw();
+
+            console.log(myBird.x+'--'+myBird.y);
+            if(cax.isPointInPath(myBird.x,myBird.y )|| myBird.y<=0 ||myBird.y>=488){
+                cax.fillStyle='red';
+                cax.font='50px MicroSoft YaHei';
+                cax.fillText('Game Over!',240,230);
+
+                cax.font='20px MicroSoft YaHei'
+                cax.strokeText('By liwei ',720,570);
+                return false;
+            }
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+          #cas  {
+            position: absolute;
+            left: 100px;
+            top: 100px;
+          }
+        </style>
+    </head>
+    <body>
+    <canvas id='cas' width="500" height="500">
+
+    </canvas>
+    <input type='file' id='file'>
+    <script>
+      var cas = document.getElementById('cas');
+      var cax = cas.getContext('2d');
+      var fileInput = document.getElementById('file');
+      fileInput.addEventListener('change',function(){
+        var file =fileInput.files[0];
+        var img = new Image;
+        var url =URL.createObjectURL(file);
+        img.src= url;
+        img.addEventListener('load',function(){
+          var w = img.width;
+          var h=  img.height;
+          var scaleX= 500/w;
+          var scaleY = 500/h;
+          var scale = scaleX<scaleY?scaleX:scaleY;
+          cax.save();
+          cax.clearRect(0,0,500,500);
+          cax.translate(250,250);
+          cax.scale(scale,scale);
+          cax.drawImage(img,-w/2,-h/2);
+          cax.restore();
+          change();
+        })
+      })
+
+function change(){
+  var imgData = cax.getImageData(0,0,500,500);
+  var data = imgData.data;
+  function getPosition(x,y){
+    return  4* 500 * (y-1) + 4 * x;
+  }
+  for(var x=0; x<500; x++){
+    for(var y=0; y<500; y++){
+      var target = getPosition(x,y);
+      var nextX = getPosition(x+1,y);
+      var nextY = getPosition(x,y+1);
+      //求出左右紧邻像素点之间的色彩插值
+      var rr = Math.abs(data[nextX+0]-data[target+0]);
+      var rg = Math.abs(data[nextX+1]-data[target+1]);
+      var rb = Math.abs(data[nextX+2]-data[target+2]);
+
+      //求出上下紧邻的像素点之间的色彩插值
+      var br = Math.abs(data[nextY+0]-data[target+0]);
+      var bg = Math.abs(data[nextY+1]-data[target+1]);
+      var bb = Math.abs(data[nextY+2]-data[target+2]);
+
+      data[target+0] = 255 -(rr+br);
+      data[target+1] = 255 -(rg+bg);
+      data[target+2] = 255 -(rb+bb);
+    }
+  }
+  cax.putImageData(imgData,0,0);
+}
+    </script>
+    </body>

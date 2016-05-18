@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="cax" width="800" height="600" style="border: 1px solid #000;"></canvas>
+<script>
+var cax=document.getElementById('cax');
+    var cas=cax.getContext('2d');
+
+    cas.strokeStyle='red';
+    cas.moveTo(10,10);
+    cas.lineTo(100,10);
+    cas.stroke();
+    cas.strokeStyle='black';
+    cas.strokeRect(100,10,90,0);
+    //画线时，从某个起点开始，比如（10，10），画线以纵轴10来画，但是无法知道1像素是占据上方还是下方，于是
+//    双方都被占据了
+//    而用strokeStyle可以设置宽高，因此就占据相应的高度
+
+    cas.fillRect(20,20,3,3);
+//获取ImageData对象  存在数组，一定范围内的数据   rgba四个值    data: Uint8ClampedArray[120]
+    cas.getImageData(10,10,3,10);
+</script>
+</body>
+</html>
